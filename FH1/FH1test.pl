@@ -6,7 +6,7 @@ use FolderInfo;
 use Cwd;
 
 my $object = new FolderInfo(cwd);
-$object->sortFiles();
+$object->sortAll();
 my @files = $object->getFiles();
 $object->printInfo(@files);
 

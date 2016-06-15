@@ -13,6 +13,7 @@ sub new {
 	}, $class;
 
 	$self->dataUpdate();
+	$self->sortAll();
 	return $self;
 }
 
@@ -33,26 +34,24 @@ sub printInfo {
 	my ($self, @info) = @_;
 	foreach my $f (@info) {
 		my $age = -M $f;
-		printf "%s\tcreation: %.8f Days ago\n",$f, $age;
+		printf "%s\tcreation: %.20f Days ago\n",$f, $age;
 	}
 }
 
-sub getFiles {
-	return @{$_[0]->{_files}};  
+sub nextFile {
+	return pop @{$_[0]->{_files}};
 }
-sub sortFiles {
+
+sub nextFolder {
+	return pop @{$_[0]->{_folders}};
+}
+
+sub sortAll {
 	my ($self) = @_;
 	@{$self->{_files}} = $self->_sortData(@{$self->{_files}});
-	return 1;
-}
-sub getFolders {
-	return @{$_[0]->{_folders}};
-}
-sub sortFolders {
-	my ($self) = @_;
 	@{$self->{_folders}} = $self->_sortData(@{$self->{_folders}});
 	return 1;
-}	
+}
 
 #-----------Private menthods--------------------
 #-----------------------------------------------
@@ -78,9 +77,19 @@ sub _sortData {
 		#last time $f was modified
 		$age{$f} = -M $f;
 	}
-	#accending order
+	#non-accending order
 	my @sorted = sort { $age{$a} <=> $age{$b} } keys %age;	
 	return @sorted;
 }
+
+#-------------------Subject to removal-----------------
+#------------------------------------------------------
+sub getFiles {
+	return @{$_[0]->{_files}};  
+}
+sub getFolders {
+	return @{$_[0]->{_folders}};
+}
+
 
 return 1;
