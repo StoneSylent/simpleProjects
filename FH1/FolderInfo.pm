@@ -1,36 +1,33 @@
-package Folder;
+package FolderInfo;
 
 use Cwd;
 
-
 sub new {
 	
-	my ( $class) = @_; 
+	my ( $class, $path) = @_; 
 	
 	my $self = bless {
 		_folders => [],
 		_files => [],
-		_dir => cwd,
+		_dir => $path,
 	}, $class;
-	#populates _folders and _dir
-	$self->dataUpdate(0);
-	
+
+	$self->dataUpdate();
 	return $self;
 }
 
-#option 1: print data, option 0: no prints
+#gets info for $self
 sub dataUpdate {
 	my ($self) = @_;
-	my @info;
-	#go to _dir
 	opendir(DIR, $self->{_dir});
-	@info = readdir DIR; 
-	
+	my @info = readdir DIR; 
+	#remove old info
+	$self->{_files} = [];
+	$self->{_folders} = [];
+	#divide into types	
 	$self->_sortInfo(@info);
-	
 	return 1;
 }
-
 
 sub printInfo {
 	my ($self, @info) = @_;
@@ -38,33 +35,6 @@ sub printInfo {
 		my $age = -M $f;
 		printf "%s\tcreation: %.8f Days ago\n",$f, $age;
 	}
-}
-
-#populates the _files and _folders of the object
-sub _sortInfo {
-	my ($self, @info) = @_;
-	my @files, my @folders;
-	foreach my $f (@info) {
-		if ( $f eq '.' or $f eq '..' ) {
-			next;
-		} else {
-			push @{$self->{_files}}, $f;
-		}
-	}
-}
-
-sub _sortData {
-
-	my ($self, @info) = @_;
-	my %age;
-	
-	for my $f (@info) {
-		#last time $f was modified
-		$age{$f} = -M $f;
-	}
-	#go back to $old_dir;
-	my @sorted = sort { $age{$a} <=> $age{$b} } keys %age;	
-	return @sorted;
 }
 
 sub getFiles {
@@ -84,5 +54,33 @@ sub sortFolders {
 	return 1;
 }	
 
+#-----------Private menthods--------------------
+#-----------------------------------------------
+#populates the _files and _folders of the object
+sub _sortInfo {
+	my ($self, @info) = @_;
+	my @files, my @folders;
+	foreach my $f (@info) {
+		if ( $f eq '.' or $f eq '..' ) {
+			next;
+		} elsif ( -f $f ) {
+			push @{$self->{_files}}, $f;
+		} elsif ( -d $f ) {
+			push @{$self->{_folders}}, $f;
+		}
+	}
+}
+
+sub _sortData {
+	my ($self, @info) = @_;
+	my %age;
+	for my $f (@info) {
+		#last time $f was modified
+		$age{$f} = -M $f;
+	}
+	#accending order
+	my @sorted = sort { $age{$a} <=> $age{$b} } keys %age;	
+	return @sorted;
+}
 
 return 1;
