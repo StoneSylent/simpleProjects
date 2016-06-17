@@ -7,34 +7,47 @@ use Cwd;
 use File::Copy;
 
 #perl FH1profilerTest.pl <profile_name>
-my $profile = $ARGV[0];
+my $profileName = $ARGV[0];
 
 if ( not profileFound() ) {
-	die "Missing profile \"$profile\"\n";
+	die "Missing profile \"$profileName\"\n";
 }
 
-printf "\n-------------Welcome %s--------------\n\n\n",$profile;
+printf "\n-------------Welcome %s--------------\n",$profileName;
 chdir "profiles";
-chdir $profile;
+chdir $profileName;
 
-$profile = new FolderInfo(cwd);
+my $profile = new FolderInfo(cwd);
 
-while ($temp = $profile->nextFile() )
-{
-	$profile->printInfo($temp);
-}
-while ($temp = $profile->nextFolder() )
-{
-	$profile->printInfo($temp);
-}
-
+print "Folders:\n";
+folderRenameTest1($sName);
+print "\nFiles:\n";
+fileRenameTest1("Home",$sName);
+printf "\nGoodbye %s\n\n", $profileName; 
 
 #------------------------------Methods-----------------------------------
 #------------------------------------------------------------------------
+sub fileRenameTest1 {
+	my ($dirName,$name) = @_;
+	while ($f = $profile->nextFile())	{
+		$profile->printInfo($f);
+		printf "\trenamed to %s%s\n",$dirName,$name++;
+	}
+}
+
+sub folderRenameTest1 {
+	my ($name) = @_;
+	while ($f = $profile->nextFolder())	{
+		$profile->printInfo($f);
+		printf "\trenamed to %s\n",$name++;
+	}
+
+}
+
 sub profileFound {
 	opendir(PROFILES, 'profiles') || die "Missing the profiles folder!\n";
 	while( ( $name = readdir(PROFILES) ) ) {
-		   if ( $name eq $profile ) {
+		   if ( $name eq $profileName ) {
 		   	closedir(PROFILES);
 		   	return 1;
 		   }
