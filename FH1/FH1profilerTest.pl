@@ -19,29 +19,52 @@ chdir $profileName;
 
 my $profile = new FolderInfo(cwd);
 
-print "Folders:\n";
-folderRenameTest1($sName);
-print "\nFiles:\n";
-fileRenameTest1("Home",$sName);
+rfTravel($profile, "A", '-');
+
 printf "\nGoodbye %s\n\n", $profileName; 
 
 #------------------------------Methods-----------------------------------
 #------------------------------------------------------------------------
-sub fileRenameTest1 {
-	my ($dirName,$name) = @_;
-	while ($f = $profile->nextFile())	{
-		$profile->printInfo($f);
-		printf "\trenamed to %s%s\n",$dirName,$name++;
+sub fileRenameTest1 {	
+	my ($folder,$parent,$name,$depth) = @_;
+	printf "*****renaming the files of %s*****\n",$parent;
+	while ($f = $folder->nextFile())	{
+		print $depth; #$folder->printInfo($f);
+		printf "%s%s renamed to %s%s\n",$depth,commonSize($f,20),$parent,$name++;
 	}
+	printf "*****end of files from %s*****\n",$parent;
 }
 
-sub folderRenameTest1 {
-	my ($name) = @_;
-	while ($f = $profile->nextFolder())	{
-		$profile->printInfo($f);
-		printf "\trenamed to %s\n",$name++;
+sub rfTravel {
+	my ($folder,$parent, $depth) = @_;
+	my $name = "A";
+	my $path = cwd;
+	
+	while ($f = $folder->nextFolder()) {
+		print $depth; #$folder->printInfo($f);
+		printf "%s%s renamed to %s\n",$depth,commonSize($f,20), $parent.$name;
+		opendir(CHILD, $f);
+		chdir CHILD;
+		closedir(CHILD);
+		#we must go deeper!
+		rfTravel( new FolderInfo(cwd), $f, $depth.$depth);
+		#bubble back up!
+		chdir $path;
+		$name++;
 	}
+	
+	fileRenameTest1($folder,$parent,0,$depth);
 
+}
+
+sub commonSize {
+	my ( $text, $size ) = @_;
+	my $space = " ";
+	while ( length $text != $size )
+	{
+		$text .= $space;
+	}
+	return $text;
 }
 
 sub profileFound {

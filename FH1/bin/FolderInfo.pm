@@ -34,7 +34,7 @@ sub printInfo {
 	my ($self, @info) = @_;
 	foreach my $f (@info) {
 		my $age = -M $f;
-		printf "%s\tcreation: %.20f Days ago\n",$f, $age;
+		printf "%s \t\t\t---creation: %.20f Days ago\n",$f, $age;
 	}
 }
 
