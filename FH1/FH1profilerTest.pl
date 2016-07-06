@@ -47,7 +47,7 @@ sub rfTravel {
 		chdir CHILD;
 		closedir(CHILD);
 		#we must go deeper!
-		rfTravel( new FolderInfo(cwd), $f, $depth.$depth);
+		rfTravel( new FolderInfo(cwd), $parent.$name, $depth.$depth);
 		#bubble back up!
 		chdir $path;
 		$name++;
