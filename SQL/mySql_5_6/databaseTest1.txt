@@ -1,0 +1,37 @@
+CREATE TABLE User
+  (`id` int NOT NULL, PRIMARY KEY (`id`), `firstName` varchar(20), `lastName` varchar(20))
+GO
+CREATE TABLE Address
+  (`id` int NOT NULL, FOREIGN KEY(`id`) REFERENCES User(id), `state` varchar(2), `zipcode` varchar(10))
+GO
+ALTER TABLE Address
+    ADD COLUMN `city` varchar(20) AFTER `id`,
+    ADD COLUMN `street` varchar(20) AFTER `id`,
+    ADD COLUMN `number` int AFTER `id`
+GO
+CREATE TABLE State
+  (`state` varchar(2) NOT NULL, `stateName` varchar(20))
+GO
+
+INSERT INTO User
+  (`id`, `firstName`, `lastName`)
+VALUES
+  (1, 'Bob', 'Salmon'),
+  (2, 'Joe', 'Fish'),
+  (3, 'Steve', 'Stan')
+GO
+
+INSERT INTO State
+VALUES
+  ('AZ', 'Arazona'),
+  ('OH', 'Ohio'),
+  ('PA', 'Pensylvania'),
+  ('WA', 'Washington'),
+  ('WI', 'Wisconsin')
+GO  
+
+INSERT INTO Address 
+  (`id`,`number`,`street`,`city`,`state`,`zipcode`)
+VALUES
+  (2, 198, 'far', 'lands', 'WA', '12345' )
+GO
