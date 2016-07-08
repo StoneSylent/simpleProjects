@@ -10,6 +10,8 @@ From User
 INNER JOIN Address ON User.id = Address.id 
 INNER JOIN State ON State.state = Address.state;
 
-
+/*Make the a new view of full address info*/
 CREATE VIEW FullAddress AS Select User.firstName,User.lastName,Address.number,Address.street,Address.city,State.stateName,Address.zipcode 
 From User JOIN Address ON User.id = Address.id JOIN State ON State.state = Address.state;
+/* Better sorting */
+Select User.firstName,User.lastName,Address.number,Address.street,Address.city,State.stateName,Address.zipcode From User JOIN Address ON User.id = Address.id JOIN State ON State.state = Address.state ORDER BY State.stateName ASC, Address.city ASC, User.lastName ASC;
