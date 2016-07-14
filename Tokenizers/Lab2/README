@@ -1,0 +1,36 @@
+Author: Brandon Stone (.505)
+Course: CSE 3341
+Assignment: Core Interpreter Project, Part2 (parser)
+Due: Oct 31th, 2015 11:59pm
+
+Files: 
+
+	README : Project file descriptions and instructions.
+	
+	Doc2.txt : Useful information about the tokenizer class that explains the design, 
+			use and testing of the tokenizer.(same as lab part 1)
+					 
+	Tokenizer.java : The tokenizer class containing getToken() and skipToken()
+	
+	make : File used for compiling the project with the option to remove .class files.
+	
+	Instructions on how to compile and run the program:
+		compile: %make 
+		 
+	 	run: %java Interpreter <coreProgram> <inputData>
+		where <coreProgram> contains the source code for the program to be parsed, printed, and executed.
+		and <inputData> contains the data used for the read command by the program.
+	
+	Most java classes in this program contain three methods, a print, execute, and parse method with names
+	corresponding to their class type (parseLoop(), printProg(), etc.).
+	The OO approach was used and some ideas were used from the slides provided by the professor.
+	The Core grammar for each class type has a comment at the type defining the structure it depends on.
+	The Tokenizer used to read the <coreProgram> is a singleton utilizing the singleton pattern. 
+	Similarly the InputReader class uses a singleton to read input from <inputData>
+	
+	Bugs: Negatives numbers where not handled from the input file, instead treated as positive numbers.
+		Pretty print was limited to new lines with no spaces.  
+					 
+		
+	  
+		

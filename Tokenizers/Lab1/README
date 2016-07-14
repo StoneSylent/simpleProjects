@@ -1,0 +1,22 @@
+Author: Brandon Stone (.505)
+Course: CSE 3341
+Assignment: Core Interpreter Project, Part1 (Tokenizer)
+Due: Oct 8th, 2015 11:59pm
+
+Files: 
+
+	README : Project file descriptions and instructions.
+	
+	Doc.txt : Useful information about the tokenizer class that explains the design, 
+					 	use and testing of the tokenizer.
+					 
+	Tokenizer.java : The tokenizer class containing getToken() and skipToken()
+	
+	Tokenize.java : The class using the tokenizer to tokenize a supplied inputFile
+	
+	make : File used for compiling the project with the option to remove .class files.
+	
+	Instructions on how to run the program: program requires one argument, the text file to be tokenized. 
+	
+	compile: %make 
+
