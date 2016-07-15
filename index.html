@@ -9,6 +9,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script src="javascripts/respond.js"></script>
     <script src="javascripts/index.js"></script>
+    <script>
+    	$(function(){
+    		$("#header").load("header.html");
+    	});
+    </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -19,14 +24,7 @@
   </head>
     
   <body onload="generate()">
-      <div id="header">
-        <nav class="fork">
-          <li><a href="https://github.com/StoneSylent/simpleProjects">MyGitHub</a></li>
-          <li><a href="https://stonesylent.github.io/simpleProjects/index.html">Home</a><li>
-					<li style="float: right;"><a href="https://stonesylent.github.io/simpleProjects/index.html">Contact</a></li>
-					<li style="float: right;"><a href="https://github.com/StoneSylent/simpleProjects/tree/gh-pages">Source</a></li>
-        </nav>
-      </div>
+    <div id="header"></div>
 
     <div class="wrapper">
 
