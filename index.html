@@ -5,9 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Simpleprojects by StoneSylent</title>
     <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-dark.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
+		<script src="javascripts/respond.js"></script>
+    <script src="javascripts/index.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -15,27 +16,24 @@
     <link rel="stylesheet" href="stylesheets/ie.css">
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
   </head>
-  <body>
+    
+  <body onload="generate()">
       <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/StoneSylent/simpleProjects">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/StoneSylent/simpleProjects/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/StoneSylent/simpleProjects/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
+        <nav class="fork">
+          <li><a href="https://github.com/StoneSylent/simpleProjects">MyGitHub</a></li>
+          <li><a href="https://stonesylent.github.io/simpleProjects/index.html">Home</a><li>
+					<li style="float: right;"><a href="https://stonesylent.github.io/simpleProjects/index.html">Contact</a></li>
+					<li style="float: right;"><a href="https://github.com/StoneSylent/simpleProjects/tree/gh-pages">Source</a></li>
         </nav>
-      </div><!-- end header -->
+      </div>
 
     <div class="wrapper">
 
       <section>
         <div id="title">
           <h1>Simpleprojects</h1>
-          <p></p>
           <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/StoneSylent">StoneSylent</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
         <div id ="content">
           <ul name="folders">
@@ -64,13 +62,19 @@
               <p>- Playing around with sql as it's been far to long.</p>
             </li>
           </ul>
-
+					
           <h3>Why?</h3>
-          <p>As a recent CSE graduate I felt it important to store independent past project. In no way is this an exhaustive list of my programing experience. After a hard drive failure, a windows update failure and a misplaced flash-drive lots of projects are missing (I should have used GitHub).</p>
+          <p>As a recent CSE graduate I felt it important to store independent past project. In no way is this an exhaustive 
+          	list of my programing experience. After a hard drive failure, a windows update failure and a misplaced flash-drive
+          	lots of projects are missing (I should have used GitHub).</p>
           <h3>Now what?</h3>
-          <p>As I move past my college years continuing to program is something I desire. Learning never stops. As for GitHub I will commit any independent work I find helpful to have a backup of.</p>
+          <p>As I move past my college years continuing to program is something I desire. Learning never stops. As for GitHub I 
+          	will commit any independent work I find helpful to have a backup of.</p>
         </div>
+        <span class="credits left">Project maintained by <a href="https://github.com/StoneSylent">StoneSylent</a></span>
+        <span class="credits right" name="timestamp">Hosted on GitHub Pages</span>  
       </section>
+      <a href="#">Top</a></button>
 
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
