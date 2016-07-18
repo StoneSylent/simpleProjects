@@ -14,6 +14,6 @@
 	- Playing around with sql as it's been far to long.	
 	
 <h3>Why?</h3>
-<p>As a recent CSE graduate I felt it important to store independent past project. In no way is this an exhaustive list of my programing experience. After a hard drive failure, a windows update failure and a misplaced flash-drive lots of projects are missing (I should have used GitHub).</p>
+<p>As a recent CSE graduate I felt it important to store independent past projects. In no way is this an exhaustive list of my programing experience.</p>
 <h3>Now what?</h3>
 <p>As I move past my college years continuing to program is something I desire. Learning never stops. As for GitHub I will commit any independent work I find helpful to have a backup of.</p>
