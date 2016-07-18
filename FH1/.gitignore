@@ -1,0 +1,7 @@
+#Ignore all user Log files
+/profiles/_*_Log
+
+#Ignore any gedit backups
+*~
+
+ 

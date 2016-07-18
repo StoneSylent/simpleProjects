@@ -41,8 +41,8 @@ AB0 AB1
 - [x] make class to get folder/files.
 - [x] depth first search traversal of profile.
 - [x] terminal output of mock-renames.
-- [ ] clean-up output.
-- [ ] move output to log file.
+- [x] clean-up output.
+- [x] move output to log file.
 - [ ] transfer to move and rename.
 - [ ] simulate crash and create fix point.
 

@@ -16,17 +16,22 @@ use constant TRUE => 1;
 use constant FALSE => 0;
 
 #perl FH1profilerTest.pl <profile_name>
-
+#all output redirected to the log file: _<profile_name>_Log
 #---------------------------------Main-----------------------------------
 #------------------------------------------------------------------------
 my $profileName = $ARGV[0];
 
-if ( not profileFound() ) {
+unless(profileFound() ) {
 	die "Missing profile \"$profileName\"\n";
 }
+chdir "profiles";
+unless( open(LOG, ">>", "_".$profileName."_Log") ) {
+	die "Unable to create a log file";
+}
+#print to the log from now on
+select LOG;
 
 printf "\n-------------Welcome %s--------------\n",$profileName;
-chdir "profiles";
 chdir $profileName;
 
 my $profile = new FolderInfo(cwd);
