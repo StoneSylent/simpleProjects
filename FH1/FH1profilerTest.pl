@@ -9,7 +9,7 @@ use File::Copy;
 
 use constant ROOT_FOLDER_NAME => 'A';
 use constant ROOT_FILE_NAME => 0;
-use constant DEPTH => '-';
+use constant INDENT => '-';
 use constant MAX_FILE_LENGTH_EXPECTED => 20;
 use constant MAX_FOLDER_LENGTH_EXPECTED => 5;
 use constant TRUE => 1;
@@ -30,45 +30,60 @@ unless( open(LOG, ">>", "_".$profileName."_Log") ) {
 }
 #print to the log from now on
 select LOG;
-
+print "Log entry generated at".localtime."\n";
 printf "\n-------------Welcome %s--------------\n",$profileName;
+
+#make a temp profile
+my $current = cwd;
+my $temp_profile = $profileName."_temp";
+mkdir $temp_profile;
+chdir $temp_profile;
+$temp_profile = cwd;
+chdir $current;
+#go into profile
 chdir $profileName;
-
-my $profile = new FolderInfo(cwd);
-
-rfTravel($profile, '', DEPTH);
+rfTravel(new FolderInfo(cwd),'',$temp_profile,INDENT);
 
 printf "\nGoodbye %s\n\n", $profileName; 
 
 #------------------------------Methods-----------------------------------
 #------------------------------------------------------------------------
 sub fileRenameTest1 {	
-	my ($folder,$parent,$name,$indent) = @_;
-	printf "_______renaming the files of %s_____\n",$parent;
-	while ($f = $folder->nextFile())	{
-		print $indent.commonSize($f,MAX_FILE_LENGTH_EXPECTED)." renamed to ".$parent.$name++."\n";
+	my ($folder,$tDir,$pName,$name,$indent) = @_;
+	printf "_______renaming the files of %s_____\n",$pName;
+	while ($file = $folder->nextFile())	{
+		print $indent.commonSize($file,MAX_FILE_LENGTH_EXPECTED)." renamed to ".$pName.$name++."\n";
 	}
-	printf "_______end of files from %s_________\n\n\n",$parent;
+	printf "_______end of files from %s_________\n\n\n",$pName;
 }
 
 
 #Does the bulk of the traveling around directories.
 #Recursively travels deeper into the supplied folder.
 sub rfTravel {
-	my ($folder,$parent, $indent) = @_;
+	my ($folder,$pName,$tDir,$indent) = @_;
 	
 	# Rename the files first before going deeper!
-	fileRenameTest1($folder,$parent,ROOT_FILE_NAME,$indent);
+	#fileRenameTest1($folder,$tDir,$pName,ROOT_FILE_NAME,$indent);
 	
 	my $name = ROOT_FOLDER_NAME;
 	my $path = cwd;
 	
-	while ($f = $folder->nextFolder()) {
-		print $indent.commonSize($f,MAX_FOLDER_LENGTH_EXPECTED)." renamed to ".$parent.$name."\n";
-		#go deeper into the folder 
-		chdir $f;
-		#we must go deeper!
-		rfTravel( new FolderInfo(cwd), $parent.$name, $indent.DEPTH);
+	while ($fldr = $folder->nextFolder()) {
+		my $newName = $pName.$name;
+		#rename the folder in temp
+		chdir $tDir;
+		print "into temp dir".cwd."\n";
+		mkdir $newName;
+		print "tDir:".$tDir."\n";
+		chdir $path;
+		print "back to:".$path."\n";
+		#log the success of the renamed folder
+		print $indent.commonSize($fldr,MAX_FOLDER_LENGTH_EXPECTED)." renamed to ".$pName.$name."\n";
+		#we must go deeper! 
+		chdir $fldr;
+		#rename everything there too!
+		rfTravel( new FolderInfo(cwd),$newName,$tDir,$indent.INDENT);
 		#bubble back up!
 		chdir $path;
 		$name++;
