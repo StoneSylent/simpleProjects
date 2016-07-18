@@ -43,10 +43,10 @@ printf "\nGoodbye %s\n\n", $profileName;
 #------------------------------Methods-----------------------------------
 #------------------------------------------------------------------------
 sub fileRenameTest1 {	
-	my ($folder,$parent,$name,$depth) = @_;
+	my ($folder,$parent,$name,$indent) = @_;
 	printf "_______renaming the files of %s_____\n",$parent;
 	while ($f = $folder->nextFile())	{
-		printf "%s%s renamed to %s%s\n",$depth,commonSize($f,MAX_FILE_LENGTH_EXPECTED),$parent,$name++;
+		print $indent.commonSize($f,MAX_FILE_LENGTH_EXPECTED)." renamed to ".$parent.$name++."\n";
 	}
 	printf "_______end of files from %s_________\n\n\n",$parent;
 }
@@ -55,23 +55,20 @@ sub fileRenameTest1 {
 #Does the bulk of the traveling around directories.
 #Recursively travels deeper into the supplied folder.
 sub rfTravel {
-	my ($folder,$parent, $depth) = @_;
+	my ($folder,$parent, $indent) = @_;
 	
 	# Rename the files first before going deeper!
-	fileRenameTest1($folder,$parent,0,$depth);
+	fileRenameTest1($folder,$parent,ROOT_FILE_NAME,$indent);
 	
 	my $name = ROOT_FOLDER_NAME;
 	my $path = cwd;
 	
 	while ($f = $folder->nextFolder()) {
-		my $nName = $parent.$name;
-		printf "%s%s renamed to %s\n",$depth,commonSize($f,MAX_FOLDER_LENGTH_EXPECTED), $nName;
+		print $indent.commonSize($f,MAX_FOLDER_LENGTH_EXPECTED)." renamed to ".$parent.$name."\n";
 		#go deeper into the folder 
-		opendir(CHILD, $f);
-		chdir CHILD;
-		closedir(CHILD);
+		chdir $f;
 		#we must go deeper!
-		rfTravel( new FolderInfo(cwd), $nName, $depth.DEPTH);
+		rfTravel( new FolderInfo(cwd), $parent.$name, $indent.DEPTH);
 		#bubble back up!
 		chdir $path;
 		$name++;
