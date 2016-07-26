@@ -46,6 +46,14 @@ sub nextFolder {
 	return pop @{$_[0]->{_folders}};
 }
 
+sub numFile {
+	return scalar @{$_[0]->{_files}};
+}
+
+sub numFolder {
+	return scalar @{$_[0]->{_folders}};
+}
+
 sub sortAll {
 	my ($self) = @_;
 	@{$self->{_files}} = $self->_sortData(@{$self->{_files}});

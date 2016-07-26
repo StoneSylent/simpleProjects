@@ -72,16 +72,19 @@ close(LOG);
 ## 	
 sub doRenamefiles {	
 	my ($folder,$pName,$fDest,$indent) = @_;
-	my $new = $pName.ROOT_FILE_NAME;
-	printf "_______renaming the files of %s_____\n",$pName;
-	while ( my $old = $folder->nextFile())	{
-		unless (copy(catfile(cwd,$old), catfile($fDest,$new))) { 
-			die "move failed\n";
-		}		
-		printRename($old,$new,MAX_FILE_LENGTH_EXPECTED, $indent);
-		$new++;
-	}
-	printf "_______end of files from %s_________\n\n\n",$pName;
+	#has something to do
+	if ($folder->numFile()) {
+		my $new = $pName.ROOT_FILE_NAME;
+		printf "_______renaming the files of %s_____\n",$pName;
+		while ( my $old = $folder->nextFile())	{
+			unless (copy(catfile(cwd,$old), catfile($fDest,$new))) { 
+				die "move failed\n";
+			}		
+			printRename($old,$new,MAX_FILE_LENGTH_EXPECTED, $indent);
+			$new++;
+		}
+		printf "_______end of files from %s_________\n\n\n",$pName;
+	}	
 }
 ##
 ## rfTravel()
@@ -136,7 +139,7 @@ sub printRename {
 	my $new = $_[1];
 	my $gapLength = defined $_[2] ? $_[2] : 0;
 	my $indent = $_[3] ? $_[3] : "*";
-	print $indent.commonSize($old,$gapLength)."renamed to ".$new."\n";
+	print $indent.commonSize($old,$gapLength)." renamed to ".$new."\n";
 }
 ##
 ## printRunner()
