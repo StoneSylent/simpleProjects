@@ -1,4 +1,5 @@
-#Ignore all user Log files
+#Ignore all user Log files and temp profiles
+/profiles/*_temp
 /profiles/_*_Log
 
 #Ignore any gedit backups
