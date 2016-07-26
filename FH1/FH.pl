@@ -21,14 +21,20 @@ use constant TRUE => 1;
 use constant FALSE => 0;
 
 
-
-#perl FH1profilerTest.pl <profile_name>
-#all output redirected to the log file: _<profile_name>_Log
-#---------------------------------Main-----------------------------------
-#------------------------------------------------------------------------
+##
+## Main
+##
+## Arguments:
+##    $profileName: profile folder to be used
+##
+## Generates a Log file of the profile folders/files changed.
+## 
+## Execute:
+## 		perl FH1profilerTest.pl $profileName
+##
 my $profileName = $ARGV[0];
 
-unless(profileFound() ) {
+unless(profileFound($profileName) ) {
 	die "Missing profile \"$profileName\"\n";
 }
 chdir "profiles";
@@ -48,15 +54,23 @@ chdir $profileName;
 my $profile = new FolderInfo(cwd);
 rfTravel($profile, DEFAULT_FOLDER, $tempProPath, INDENT);
 #end work on the profile
-printRunner("Goodbye".$profileName,1,2);  
+printRunner("Goodbye ".$profileName,1,2);  
 close(LOG);
 #------------------------------Methods-----------------------------------
 #------------------------------------------------------------------------
-# Uses folder: where the files are located
-#			pName: parents name
-#     baseName: first sibling
-#     indent: for logging				
-sub fileRenameTest1 {	
+##
+## doRenamefiles()
+##
+## Arguments:
+##    $folder: FolderInfo object that knows the files to be renamed 
+##		$pName: string Name of folder files are in.
+##    $fDest: string Path to folder destination	
+##		$indent: string Logging character
+## 		
+## Renames all files found in the folder object based on age
+## and new location. 
+## 	
+sub doRenamefiles {	
 	my ($folder,$pName,$fDest,$indent) = @_;
 	my $new = $pName.ROOT_FILE_NAME;
 	printf "_______renaming the files of %s_____\n",$pName;
@@ -69,23 +83,25 @@ sub fileRenameTest1 {
 	}
 	printf "_______end of files from %s_________\n\n\n",$pName;
 }
-
-#Does the bulk of the traveling around directories.
-#Recursively travels deeper into the supplied folder.
-# Uses folder: where the contents are located
-#			pName: parents name
-#     baseName: first sibling
-#     fDest: renew parent location
-#     indent: for logging				
-
+##
+## rfTravel()
+##
+## Arguments:
+##    $folder: FolderInfo gives Folder/Files to be renamed 
+##		$pName: string Name of folder files are in.
+##    $fDest: string Path to folder destination	
+##		$indent: string Logging character
+## 		
+## Renames Files/Folders while recursively traveling into
+## Folders to also rename their contents.  
+## 	
 sub rfTravel {
 	my ($folder,$pName,$fDest, $indent) = @_;
-	
-	# Rename the files first before going deeper!
-	fileRenameTest1($folder,$pName,$fDest,$indent);
 	#save folder information
 	my $baseName = ROOT_FOLDER_NAME;
 	my $path = cwd;
+	# Rename the files first before going deeper!
+	doRenamefiles($folder,$pName,$fDest,$indent);
 	#rename all the folders now
 	while (my $old = $folder->nextFolder()) {
 		my $new = $pName.$baseName;
@@ -93,8 +109,7 @@ sub rfTravel {
 		my $newPath = catfile($fDest,$new); 
 		unless (make_path($newPath)) {
 			my $error = "failed to create folder: ".$new."\n";
-			print($error); die($error);
-			
+			print($error); die($error);			
 		}
 			printRename($old,$new,MAX_FOLDER_LENGTH_EXPECTED, $indent); 
 			#we must go deeper!
@@ -105,9 +120,17 @@ sub rfTravel {
 			$baseName++;
 	}
 }
-
-#prints <indent><old><gaplength><...><new>
-#where gaplength fills min length old should take
+##
+## printRename()
+##
+## Arguments:
+##    $old: string Old Name 
+##		$new: string New Name
+##    $gapLength: integer DEFAULT:0 spacing modifier	
+##		$indent: string DEFAULT:* text modifier 
+## 		
+## Prints the change from old to new.
+##    	
 sub printRename { 
 	my $old = $_[0];
 	my $new = $_[1];
@@ -115,26 +138,44 @@ sub printRename {
 	my $indent = $_[3] ? $_[3] : "*";
 	print $indent.commonSize($old,$gapLength)."renamed to ".$new."\n";
 }
-#prints "<before><runner><text><runner><after>"
-#where <before>,<after> are number of new lines.
+##
+## printRunner()
+##
+## Arguments:
+##    $text: string Text found inside runner 
+##		$before: integer DEFAULT:0 number of newlines before runner
+##    $after: integer DEFAULT:0 number of newlines after runner	 
+## 		
+## Prints runner information
+##    	
 sub printRunner {
 	my $text = $_[0];
 	my $before = defined($_[1]) ? $_[1] : 0;
 	my $after = defined($_[2]) ? $_[2] : 0;
 	my $runner = "-------------";
 	$runner = $runner." ".$text." ".$runner;
-	while( $before > 0 ) {
+	while($before) {
 		$runner = "\n".$runner;
 		$before -= 1;
 	}
-	while( $after > 0 ) {
+	while($after) {
 		$runner = $runner."\n";
 		$after -= 1;
 	}
 	print($runner);
 }
-
-#resize <text> to length>size where <size>0
+##
+## commonSize()
+##
+## Arguments:
+##    $text: string text to be resized 
+##		$size: integer length of text to return.
+##    
+## Returns: 
+##		$text with length of $size unless $size is too small.		
+## 
+## Adds spaces after $text until $text is at least length of $size   	
+##
 sub commonSize {
 	my ( $text, $size ) = @_;
 	my $space = " ";
@@ -144,12 +185,23 @@ sub commonSize {
 	}
 	return $text;
 }
-
-#checks the profile folder for 
+##
+## profileFound()
+##
+## Arguments:
+## 		$profile: string Name of folder in profiles to be found
+##
+## Returns:
+##			0: profile not found
+##			1: profile was found
+##
+## Boolean method that returns in the profile was found 
+## 
 sub profileFound {
+	my ( $profile ) = @_;
 	opendir(PROFILES, 'profiles') || die "Missing the profiles folder!\n";
 	while( ( my $name = readdir(PROFILES) ) ) {
-		   if ( $name eq $profileName ) {
+		   if ( $name eq $profile ) {
 		   	closedir(PROFILES);
 		   	return TRUE;
 		   }
