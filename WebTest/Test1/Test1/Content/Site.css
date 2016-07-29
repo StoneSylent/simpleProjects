@@ -22,3 +22,16 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* Required '*' for forms */
+.required {
+        color: red;
+        font-size: x-large;
+        font-weight: bold;
+        width: auto;
+        padding: 0px;
+    }
+ /* */
+    .control-label.req {
+        padding: 4px 7px 2px 4px;
+    }
