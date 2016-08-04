@@ -14,4 +14,6 @@ Loading in the database from a dump file </br>
 </p>
 
 <h3>More info</h3>
-<b>see:</b> [terminal commands](http://dev.mysql.com/doc/refman/5.7/en/mysql-commands.html)[*](http://cse.unl.edu/~sscott/ShowFiles/SQL/CheatSheet/SQLCheatSheet.html)
+<b>see:</b> [terminal commands](http://dev.mysql.com/doc/refman/5.7/en/mysql-commands.html)[*](http://cse.unl.edu/~sscott/ShowFiles/SQL/CheatSheet/SQLCheatSheet.html)<br />
+Libraries database model <a href="http://i.stack.imgur.com/Ok1Xp.png">source</a><br />
+
