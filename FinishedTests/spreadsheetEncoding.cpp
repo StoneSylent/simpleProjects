@@ -9,27 +9,9 @@
 
 using namespace std;
 
-int SSDcodeColID(const string& col) {
-	int ret = 0;
-	for (char c: col) {
-		ret = ret * 26 + c - 'A' + 1;
-	}
-	return ret;
-}
-
-// 'A' == 0 ? leadzero=0 : leadzero =1;
-int mySSD(string s, bool leadzero) {
-	int result = 0;
-	for(int i=0; i<s.length(); i++) {
-		result = result * 26 + s[i] - 'A' + 1;
-	}	
-	//return (leadzero == 0 ? result : result-1);
-	return result-leadzero;
-}
-
-void dataPrint(string s, int i) {
-	printf("string %s is %d\n", s.c_str(), i);
-}
+int SSDcodeColID(const string& col);
+int mySSD(string s, bool leadzero);
+void dataPrint(string s, int i);
 
 int main () {
 
@@ -55,3 +37,26 @@ int main () {
 	
 return 0;
 }
+
+int SSDcodeColID(const string& col) {
+	int ret = 0;
+	for (char c: col) {
+		ret = ret * 26 + c - 'A' + 1;
+	}
+	return ret;
+}
+
+// 'A' == 0 ? leadzero=0 : leadzero =1;
+int mySSD(string s, bool leadzero) {
+	int result = 0;
+	for(int i=0; i<s.length(); i++) {
+		result = result * 26 + s[i] - 'A' + 1;
+	}	
+	//return (leadzero == 0 ? result : result-1);
+	return result-leadzero;
+}
+
+void dataPrint(string s, int i) {
+	printf("string %s is %d\n", s.c_str(), i);
+}
+
