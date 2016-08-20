@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int SSDcodeColID(const string& col);
+int SSDcodeColID(string col);
 int mySSD(string s, bool leadzero);
 void dataPrint(string s, int i);
 
@@ -38,7 +38,7 @@ int main () {
 return 0;
 }
 
-int SSDcodeColID(const string& col) {
+int SSDcodeColID(string col) {
 	int ret = 0;
 	for (char c: col) {
 		ret = ret * 26 + c - 'A' + 1;
@@ -59,4 +59,3 @@ int mySSD(string s, bool leadzero) {
 void dataPrint(string s, int i) {
 	printf("string %s is %d\n", s.c_str(), i);
 }
-
