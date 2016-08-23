@@ -5,17 +5,14 @@
 	$ g++ -std=c++11 deleteDuplicates.cpp
 	
 	Removes duplicate values from a sorted vector
-	deleted values are set to zero and pushing to
-	the end of the vector 
-	
 */
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-void printVector ( vector<int> arg );
-vector<int> deleteDuplicates(vector<int> A);
+void printVector ( const vector<int> arg );
+vector<int> deleteDuplicates( const vector<int> A);
 
 int main()
 {
@@ -24,9 +21,15 @@ int main()
 	printVector(values);
 	cout << "  Ending array was ";
 	printVector(deleteDuplicates(values));
+
+  vector<int> v = {1,1,4,5,6,6,12,21};
+	cout << "Starting array was ";
+	printVector(v);
+	cout << "  Ending array was ";
+	printVector(deleteDuplicates(v));	
 }
 
-void printVector ( vector<int> arg ) {
+void printVector ( const vector<int> arg ) {
 	for (int i=0; i<arg.size(); i++)
 	{
 		cout << arg[i] << " ";
@@ -34,7 +37,7 @@ void printVector ( vector<int> arg ) {
 	cout << endl;
 }
 
-vector<int> deleteDuplicates(vector<int> A)
+vector<int> deleteDuplicates( const vector<int> A)
 {
 	vector<int> temp = A;
 	int writeIndex = 0;	
@@ -43,10 +46,9 @@ vector<int> deleteDuplicates(vector<int> A)
 			 temp[++writeIndex] = temp[i];
 		}  
 	}
-	//set duplicates to zero
-	for (int j=writeIndex+1; j<A.size(); j++) {
-		temp[j] = 0;	
-	}
+	//fix vector size
+	temp.resize(writeIndex+1);
+	
 	return temp;
 }
 
