@@ -1,13 +1,10 @@
- 
 #Variables
 CC= g++
 
-#start with A-Z
 COMPILES= DeleteDuplicates  Hello_world  Palendrome SortedMerge EndLTest SimpleInput SpreadsheetEncoding F_StreamTest
 
 #executables are all lowercase
 LowerExecutables = $(shell echo $(COMPILES))
-
 
 all: $(COMPILES)
 
@@ -33,7 +30,7 @@ SimpleInput:
 SpreadsheetEncoding:
 	$(CC) -std=c++11 spreadsheetEncoding.cpp -o SpreadsheetEncoding
 #8
-FstreamTest:
+F_StreamTest:
 	$(CC) fstreamTest.cpp -o F_StreamTest	
 	
 #cleaners	

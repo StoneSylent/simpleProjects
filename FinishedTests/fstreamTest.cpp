@@ -4,24 +4,25 @@
 using namespace std;
 
 const char* OUTPUT_FILE = "results.txt";
+bool error;
+
 bool PrintFile(char *ileName);
+bool R_Error(const bool b, string s);
+
 
 //require files to be read
 int main(int argc, char *argv[]) {
 
 	//check that files were passed
-	if (argc < 2) {
-		cout << "Error: forgot to include files."<< endl;
-		return 1;
-	}
+	error = R_Error(argc < 2, "No files were passed.");
+	if (error) return 1;
 
 	//loop through files
 	for(int i=1; i<argc; i++) {
 		char *fname = argv[i];
-		if ( !PrintFile(fname) ) {
-			cout << "unable to read " << fname << endl;
-			return 2;
-		}
+		error = R_Error(!PrintFile(fname), "unable to read"+(string)fname );
+		if (error) return 2;
+
 	} 
 	cout << endl;
 	return 0;
@@ -40,3 +41,14 @@ bool PrintFile(char* fileName) {
 	return true;
 }
 
+/**
+ * 	Handles printing of errors
+ *
+ *	@param b bool if param s should be printed
+ *	@param s string the error to print
+ *	@return b bool if error was printed
+ */
+bool R_Error(bool b, string s) {
+	if (b) cout << s << endl;
+	return b;
+}
