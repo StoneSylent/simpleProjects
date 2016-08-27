@@ -9,21 +9,22 @@ bool error;
 bool PrintFile(char *ileName);
 bool R_Error(const bool b, string s);
 
-
 //require files to be read
 int main(int argc, char *argv[]) {
 
 	//check that files were passed
 	error = R_Error(argc < 2, "No files were passed.");
-	if (error) return 1;
+	if (error)
+		return 1;
 
 	//loop through files
-	for(int i=1; i<argc; i++) {
+	for (int i = 1; i < argc; i++) {
 		char *fname = argv[i];
-		error = R_Error(!PrintFile(fname), "unable to read"+(string)fname );
-		if (error) return 2;
+		error = R_Error(!PrintFile(fname), "unable to read" + (string) fname);
+		if (error)
+			return 2;
 
-	} 
+	}
 	cout << endl;
 	return 0;
 }
@@ -31,13 +32,14 @@ int main(int argc, char *argv[]) {
 bool PrintFile(char* fileName) {
 	ifstream s;
 	s.open(fileName);
-	if (!s.good()) return false;
+	if (!s.good())
+		return false;
 	string line;
 	cout << fileName << endl;
 	while (getline(s, line)) {
 		cout << "\t" << line << endl;
-	}	
-	s.close();	
+	}
+	s.close();
 	return true;
 }
 
@@ -49,6 +51,7 @@ bool PrintFile(char* fileName) {
  *	@return b bool if error was printed
  */
 bool R_Error(bool b, string s) {
-	if (b) cout << s << endl;
+	if (b)
+		cout << s << endl;
 	return b;
 }

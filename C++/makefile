@@ -1,7 +1,8 @@
 #Variables
 CC= g++
 
-COMPILES= DeleteDuplicates  Hello_world  Palendrome SortedMerge EndLTest SimpleInput SpreadsheetEncoding F_StreamTest
+COMPILES= DeleteDuplicates  Hello_world  Palendrome SortedMerge EndLTest \
+SimpleInput SpreadsheetEncoding F_StreamTest R_File
 
 #executables are all lowercase
 LowerExecutables = $(shell echo $(COMPILES))
@@ -31,7 +32,10 @@ SpreadsheetEncoding:
 	$(CC) -std=c++11 spreadsheetEncoding.cpp -o SpreadsheetEncoding
 #8
 F_StreamTest:
-	$(CC) fstreamTest.cpp -o F_StreamTest	
+	$(CC) fstreamTest.cpp -o F_StreamTest
+#9
+R_File:
+	$(CC) -std=c++11 rfile.cpp -o R_File 
 	
 #cleaners	
 cleanAll:
