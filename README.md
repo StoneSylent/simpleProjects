@@ -4,8 +4,8 @@
 	- Uses C#'s SHA256 function	for a one way encryption of passwords with or without the salt value. 
 - [FH1](FH1)
 	- Recursive directory traversal for a folder/file rename. (Photo project)  
-- [FinishedTests](FinishedTests)
-	- Any programming methodology, pattern, etc. Also short code tests from my reading of computer science. 
+- [C++](C++)
+	- Any C++ code that is independent from the other content sections. 
 - [TickTackToeAI](TickTackToeAI)
 	- IDDFS and A* search for optimal play of tic tac toe.
 - [Tokenizers](Tokenizers)
