@@ -6,10 +6,10 @@ using namespace std;
 const char* OUTPUT_FILE = "results.txt";
 bool error;
 
-bool PrintFile(char *ileName);
+bool PrintFile(char *fileName);
 bool R_Error(const bool b, string s);
 
-//require files to be read
+//requires files to be read
 int main(int argc, char *argv[]) {
 
 	//check that files were passed
