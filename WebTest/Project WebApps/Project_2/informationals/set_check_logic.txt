@@ -1,0 +1,64 @@
+#Author Brandon Stone
+/------------------------------------Game Rules-----------------------------
+http://setgame.com/sites/default/files/SET%20Instructions%20-%20English.pdf
+/---------------------------------------------------------------------------
+
+/********************************Sample Game (with the same rules)**********
+http://www.setgame.com/set/daily_puzzle
+/***************************************************************************
+
+||-------------features------------------|| key ||
+oval      || red    || one   || solid    ||  0  ||
+squiggles || purple || two   || striped  ||  1  ||
+diamonds  || green  || three || outlined ||  2  ||
+||------------------------------------------------
+
+Example:
+		card: oval	,purple   ,three	,striped
+		card: oval(0)	,purple(1),three(2)	,striped(1)
+		encoding: 0121 
+----------------------------------------
+
+0-2: base 3.
+2222 is max encoding or 80 in base 10.
+81 cards total in the deck so 2222 is max and 0000 is min,
+giving each of the 81 cards a unique encoding.
+----------------------------------------------------------
+
+Solution:
+
+STEP 1: 
+-------
+take 3 cards. 0000,1200,2101. rearrange them,
+
+/0000\					            /0000\
+/1200\ and add the vertical rows. 	/1200\   => /3301\
+/2101\					            /2101\
+
+STEP 2:
+-------
+Does the number contain anything but 0,3,or 6?
+If so the three cards are not a set.
+-----------------------------------------------------------
+
+Why it works:
+
+Each digit in the encoding is 0-2
+The first digit is always the shape, second digit is the color, etc.
+The rules state that they features must mach or all be different.
+
+Possible combinations:
+
+x---- where x= 0, 1, 2	||  ||	a--- where 	a=0 are in any oder.
+x----			||or||	b---		b=1
+x---- 			||  ||	c---		c=2
+
+Summing the rows result in 0+0+0 = (0) , 1+1+1 = (3), 2+2+2 = (6), 0+1+2 = (3)
+
+Combinations that do not result in a set are:
+0+0+1=1			
+0+0+2=2			
+1+1+0=2			1,2,4,5 do not appear in a set.		
+1+1+2=4			As all possible combinations are accounted for
+2+2+0=4			the proof must be correct.
+2+2+1=5			
