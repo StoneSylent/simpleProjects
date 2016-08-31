@@ -2,7 +2,7 @@
 CC= g++
 
 COMPILES= DeleteDuplicates  Hello_world  Palendrome SortedMerge EndLTest \
-SimpleInput SpreadsheetEncoding F_StreamTest R_File
+SimpleInput SpreadsheetEncoding F_StreamTest R_File AucParser
 
 #executables are all lowercase
 LowerExecutables = $(shell echo $(COMPILES))
@@ -35,7 +35,10 @@ F_StreamTest:
 	$(CC) fstreamTest.cpp -o F_StreamTest
 #9
 R_File:
-	$(CC) -std=c++11 rfile.cpp -o R_File 
+	$(CC) -std=c++11 rfile.cpp -o R_File
+#10
+AucParser:
+	$(CC) -std=c++11 aucTest.cpp -o AucParser	
 	
 #cleaners	
 cleanAll:
