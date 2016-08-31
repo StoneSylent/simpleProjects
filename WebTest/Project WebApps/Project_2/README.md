@@ -14,13 +14,9 @@ Please wait until the end of a round before quitting.
 * Documentation: Jay Lorenz
 
 ## Contributions
-Please list who did what for each part of the project, and if anyone [pair programmed](http://en.wikipedia.org/wiki/Pair_programming) in this section.
 
 * Chaz Gordish - started modify_deck and wrote convert_to_string. Did testing for own modify_deck 				methods.
 * Brandon Stone - started deck and set_check_logic
 * Tim Mao - card_game and starting structures
 * Jincheng Liu - testing and fixes 
 * Jay Lorenz - scoring and fixes  
-
-## Testing
-Please put all testing materials (writeups code etc) in the `testing` dir.
