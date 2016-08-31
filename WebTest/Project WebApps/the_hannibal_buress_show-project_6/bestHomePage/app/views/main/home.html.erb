@@ -1,0 +1,130 @@
+<% if !(session[:user_id]) %>
+<!-- Default layout: No one is logged in -->
+	<div id="header">
+	  <div class="primary btn pretty"><%= link_to 'Sign In', login_path %></div>
+	  <div class="secondary btn pretty"><%= link_to 'Sign Up', new_user_path %></div>
+	  <div style="text-align: center;">
+	    <%= image_tag("bestHomePageLogo.png", :alt =>"bestHomePageLogo") %>
+	  </div>
+	</div>
+
+	<div id="body">
+	<div class="row navbar" id="nav1">
+  		<ul class="four columns" style="margin-right:auto;margin-left:auto;">
+    		<li ><%=link_to "Ohio State Home Page", "http://www.osu.edu", :target => '_blank' %></li>
+	    	<li ><%=link_to "Carmen", "http://carmen.osu.edu", :target => '_blank' %></li>
+	    	<li ><%=link_to "Buckeyelink", "http://buckeyelink.osu.edu", :target => '_blank' %></li>
+	    	<li ><%=link_to "Buckeyemail", "http://buckeyemail.osu.edu", :target => '_blank' %></li>
+	  	</ul>
+	</div>
+	
+	<br>
+	<br>
+	<br>
+	<div class="twelve colgrid" style="text-align: center">
+	  <div class="row">
+	    <div class="eight columns" id="weather">
+	      <p>
+	        <table>
+	          <thead>
+	            <tr>
+	              <th>Weather Unavailable</th>
+	            </tr>
+	          </thead>
+	          <tbody>
+	            <tr>
+	              <td>Please Login to Provide Location</td>
+	            </tr>
+	          </tbody>
+	        </table>
+	      </p>
+	    </div>
+	    <div class="four columns" id="note">
+	      <textarea id="area" style="width:300px; height:300px;" placeholder="These notes won't be saved!
+	      Login to enable saving your notes!"></textarea>
+	      <div id="clear" class="primary btn pretty"><a href="#">Clear</a></div>
+	      <div class="secondary btn pretty"><a href="#">Save</div>
+	    </div>
+	    
+	  </div>
+	</div>
+	</div>
+
+<% else %>
+<!-- ---------User is logged in--------- -->
+<div id="header">
+		<div class="primary btn pretty"><%= link_to "#{session[:user_id]}", edit_setting_path(Setting.find_by(user_name: session[:user_id])) %></div>
+		<div class="secondary btn pretty"><%= link_to 'Log out',logout_path, :method => :delete  %></div>
+		
+	  <div style="text-align: center;">
+	    <%= image_tag("bestHomePageLogo.png", :alt =>"bestHomePageLogo") %>
+	  </div>
+	</div>
+
+	<div id="body">
+	<div class="row navbar" id="nav1">
+		<ul class="four columns" style="margin-right:auto;margin-left:auto;">
+			<% @bookmark.each do |b| %>
+				<li><%= link_to b.title, b.url, :target => '_blank'%></li>
+			<% end %>
+		</ul>
+	</div>
+	
+	<br>
+	<br>
+	<br>
+	<div class="twelve colgrid" style="text-align: center">
+	  <div class="row">
+	    <div class="eight columns" id="weather">
+	    <% if @weather %>
+	    <% @w_data = Weather.find_by(location: @location) %>
+	        <table>
+	          <thead>
+	            <tr>
+	              <th>Weather for <%= @w_data.loc_name %>, <%= @location %></th>
+	            </tr>
+	          </thead>
+	          <tbody>
+				<tr>
+					<td></td>
+					<td>High(f): </br><%= @w_data.high %></td>
+					<td>Low(f): </br><%= @w_data.low %></td>
+					<td>Condition: </br><%= @w_data.condition %></td>
+				</tr>
+				<tr>	
+					<td></td>
+					<td>Wind: </br><%=(@w_data.wind_speed*2.23693629).round %>mph</td>
+					<!-- unix time to ascii time -->
+					<% @Sunrise = Time.at(@w_data.sunrise) %>
+					<% @Sunset = Time.at(@w_data.sunset) %>
+					<!-- format times -->
+					<td>Sunrise: </br><%= @Sunrise.strftime("%I:%M%p")%></td>
+					<td>Sunset: </br><%=  @Sunset.strftime("%I:%M%p")%></td>
+				</tr>
+	          </tbody>
+	        </table>
+	    <% else %>
+	    <table>
+        <thead>
+	        <tr>
+           <th>Unable to generate weather for  <%= @location %></th>
+	        </tr>
+	      </thead>
+	    </table>
+	    <% end %>
+	    </div>
+	    <%= form_tag({:controller=>'main',:action=>'update_note'},:method=>:post,:id=>"update_note",:name=>'note_form',:remote=>true) do %>
+	    <div class="four columns" id="note">
+	      <textarea id="area" style="width:300px; height:300px;" placeholder="Your notes starts here"><%= @note %></textarea>
+	      <div id="clear" class="primary btn pretty"><a href="#">Clear</a></div>
+	      <div class="secondary btn pretty"><%= submit_tag 'Save' %></div>
+	    </div>
+	   <% end %>
+	  <div id="updated">
+
+	  </div>
+	  </div>
+	</div>
+</div>
+
+<% end %>

@@ -1,0 +1,109 @@
+<h3 align="center">Settings</h3>
+<section class="pill tabs">
+    <ul class="tab-nav">
+        <li class="active"><a href="#">User Interface</a></li>
+        <li><a href="#">Location/Password</a></li>
+        <li><a href="#">Bookmarks</a></li>
+    </ul>
+    <div class="tab-content active">
+    	<%= form_for(Setting.find_by(user_name: session[:user_id])) do |f| %>
+        <h4>Background Color</h4>
+		<li class = "field">
+			<div class="picker">
+				<%= f.select :background, options_for_select([['Grey','grey'],['White','white'],['Black','black'],['Blue','blue'],['Green','green'],['Yellow','yellow'],['Orange','orange'],['Purple','purple']]) %>
+			</div>
+		</li>
+
+		<br />
+		 <h4>Font Color</h4>
+		<li class = "field">
+			<div class="picker">
+				<%= f.select :fontColor, options_for_select([['Black','black'],['White','white'],['Grey','grey'],['Blue','blue'],['Green','green'],['Yellow','yellow'],['Orange','orange'],['Purple','purple']]) %>
+			</div>
+		</li>
+		<br />
+		<h4>Font Size</h4>
+		<li class = "field">
+			<div class="picker">
+				<%= f.select :fontSize, options_for_select([['8','8'],['10','10'],['12','12'],['14','14'],['16','16'],['18','18'],['20','20']]) %>
+			</div>
+		</li>
+		<br />
+		<h4>Font Family</h4>
+		<li class = "field">
+			<div class="picker">
+				<%= f.select :fontFamily, options_for_select([['Arial','Arial'],['Helvetica','Helvetica'],['Times New Roman','Times New Roman'],['Courier New','Courier New']]) %>
+			</div>
+		</li>
+			<div class="actions">
+				<li class="medium default btn pretty"><%= f.submit "Update" %></li>
+			</div>
+		<% end %>
+    </div>
+    
+    <div class="tab-content"
+        <li class="danger alert" style="font-size: 20px;">Note: All fields must be filled out properly!</li><br />
+        <%= form_for(l= User.find_by(user_name: session[:user_id])) do |f| %>
+        	<% if l.errors.any? %>
+				    <div id="error_explanation">
+					    <h2><%= pluralize(l.errors.count, "error") %> prohibited this password/location from being saved:</h2>
+					    <ul>
+						    <% l.errors.full_messages.each do |message| %>
+							    <li><%= message %></li>
+						    <% end %>
+					    </ul>
+				    </div>
+			    <% end %>
+			
+			<div class="field">
+				<%= f.text_field :location %>
+			</div>
+			<div class="field">
+        <li class="info badge">Enter current password or new password</li>
+      		<%= f.password_field :password %>
+    	</div>
+			<div class="field">
+      	<li class="info badge">Confirm Password</li>
+      		<%= f.password_field :password_confirmation %>
+    	</div>
+			<div class="actions">
+				<li class="medium default btn pretty"><%= f.submit "Update" %></li>
+			</div>
+		  <% end %>
+    </div>
+
+    <div class="tab-content">
+		<ul>
+			<li class="danger alert" style="font-size: 20px;">Note: URL must have 'http://' prefix!</li><br />
+			<% Bookmark.where(user_name: session[:user_id]).each do |b| %>
+				<%= form_for(b) do |f| %>
+  					<% if b.errors.any? %>
+    					<div id="error_explanation">
+      						<h2><%= pluralize(b.errors.count, "error") %> prohibited this bookmark from being saved:</h2>
+     						 <ul>
+      						<% b.errors.full_messages.each do |message| %>
+        						<li><%= message %></li>
+      						<% end %>
+      						</ul>
+   						</div>
+  					<% end %>
+					<div class="field">
+					  <li class="info badge">Title</li>
+				    <%= f.text_field :title %>
+					</div>
+					<div class="field">
+					    <li class="info badge">URL</li>
+					    <%= f.text_field :url %>
+					</div>
+					<div class="actions">
+					    <li class="small default btn pretty"><%= f.submit "Update Bookmark" %></li>
+					</div>
+				<% end %>
+			<% end %> 
+		</ul>
+
+    </div>
+
+</section>
+
+<div class="danger btn pretty"><%= link_to 'Home', main_home_path %>
