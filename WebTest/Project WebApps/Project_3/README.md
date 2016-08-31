@@ -24,13 +24,8 @@ Enter the keyword of job you want to search and you can find the results(within 
 * Documentation:Jay Lorenz
 
 ## Contributions
-Please list who did what for each part of the project, and if anyone pair programmed in this section.
-
 * Chaz Gordish - coding for starting structure of the lab(in brief, a lot of coding) and fetch links of all job titles from the website.
 * Brandon Stone - Handle task assignements, checks quality of code, debug and reconstruct code if necessary and puts everything together
 * Weichao Mao(Tim) - coding for fetch job details from each job title links
 * Jincheng Liu - coding for the generation of the html file
 * Jay Lorenz - handle documentation,userinput and fixes
-
-## Testing
-Please put all testing materials (writeups code etc) in the `testing` dir.
