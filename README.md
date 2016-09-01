@@ -11,6 +11,7 @@
 - [ ] Why? and Now What? update to look
 - [ ] Add to Experiments page
 <hr />
+
 ###Notes on cloning
 <p>
 Some ajax calls require the use of a tag called --allow-file-access-from-files when using the Chrome browser. <br />
