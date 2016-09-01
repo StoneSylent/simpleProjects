@@ -11,6 +11,7 @@
 	<script>
         window.onload = function () {
             $("#header").load("header.html");
+            $("#footer").load("footer.html");
         }
 	</script>
 	<!--[if lt IE 9]>
@@ -21,7 +22,7 @@
 	<![endif]-->
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 </head>
-<body onload="generate()">
+<body>
 	<div id="header"></div>
 	<div class="wrapper">
 		<section>
@@ -71,11 +72,11 @@
 					will commit any independent work I find helpful to have a backup of.
 				</p>
 			</div>
-			<span class="credits left">Project maintained by <a href="https://github.com/StoneSylent">StoneSylent</a></span>
-			<span class="credits right" name="timestamp">Hosted on GitHub Pages</span>
+            <div id="footer"></div>
 		</section>
-		<a href="#">Top</a>
+    
 	</div>
+    <!--Fix for ios rotation problem-->
 	<!--[if !IE]><script>fixScale(document);</script><![endif]-->
 </body>
 </html>
