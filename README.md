@@ -5,10 +5,11 @@
 </ul>
 <hr />
 ###Plans
-<ul>
-  <li>Footer.html file</li>
-  <li>Experiments page: examples of various javascript</li>
-</ul>
+- [x] footer.html
+- [x] Responsive design of footer
+- [ ] Experiments page: examples of various javascript
+- [ ] Why? and Now What? update to look
+- [ ] Add to Experiments page
 <hr />
 ###Notes on cloning
 <p>
