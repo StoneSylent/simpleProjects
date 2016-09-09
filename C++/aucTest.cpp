@@ -11,7 +11,7 @@
 
 using namespace std;
 
-//Constants
+//Constants: '<' must have a matching '>'
 string const C_TYPE = "Content-Type: text/plain;";
 string const C_TRANS = "Content-Transfer-Encoding:";
 string const REMOVAL = "<p><b>REMOVAL:";
@@ -22,21 +22,41 @@ string const END_OF_INV = "</html>";
 int lineCount = 0;
 int matchCount = 0;
 //Prototypes
-string strDate(const AucParser::A_Date info);
-string strPrd(const AucParser::Period& p);
 string get_Single(ifstream& s, const string& first);
 string get_Single(ifstream& s, const string& first, const string& exclude);
 bool get_Pair(ifstream& s, const string first, const string second);
 void get_Item_Info(ifstream& s);
 
+string cleanString(string s, int i);
+string cleanString(string s);
+string nextInfo(ifstream& s, const string& one);
+
+
 int main(int argc, char *argv[]) {
 	/*
-	 * Test storing a day, date, time
+	 * Test storing a date
 	 */
-	AucParser* a = new AucParser();
-	a->AddDate(11, "June", 11, AucParser::am, 4, AucParser::pm);
-	AucParser::A_Date info = a->getDate();
-	cout << strDate(info) << endl;
+/*	AucParser* a = new AucParser();
+	a->AddDate(11, "June", 11, AucParser::am, 4, AucParser::pm, AucParser::Phillipi);
+
+	//store time
+	AucParser::A_Time time;
+	time.sHour = 11; time.sP = AucParser::am;
+	time.eHour = 12; time.eP = AucParser::pm;
+	//store date
+	AucParser::A_Date date;
+	date.day = 10;
+	date.month = "june";
+	//store date
+	a->AddDate(time, date, AucParser::Westerville);
+
+	string info = a->getstrDate();
+	cout << info << endl << endl;
+	info = a->getstrDate();
+	cout << info << endl;
+
+*/
+
 	/*
 	 * Moving on to processing .mBox file
 	 */
@@ -47,20 +67,19 @@ int main(int argc, char *argv[]) {
 		cout << "unable to open " << argv[1] << endl;
 		return 1;
 	}
-
+	//TODO: put back !
 	while (!s.eof()) {
 		//advance s to next email
 		get_Pair(s, C_TYPE, C_TRANS);
 		//find removal information
-		string removal = get_Single(s, REMOVAL);
-		cout << removal;
+		cout << nextInfo(s, REMOVAL) << endl;
 		//find location information
-		string loca = get_Single(s, LOCATION);
-		cout << loca;
+		cout << nextInfo(s, LOCATION) << endl;
 		//pull items
 		string item;
 		do {
 			item = get_Single(s, ITEM, END_OF_INV);
+
 			//item found
 			if (item != "") {
 				get_Item_Info(s);
@@ -76,33 +95,27 @@ int main(int argc, char *argv[]) {
 	s.close();
 }
 
-/*
- * Converts Period values into strings
- * @param Period& p value to be returned as a string
- * @return string string version of p
- */
-string strPrd(const AucParser::Period& p) {
-	switch (p) {
-	case AucParser::am:
-		return "am";
-	case AucParser::pm:
-		return "pm";
-	default:
-		return "";
+/* removes leading html tags */
+string cleanString(string s, int i) {
+	if (s.at(i) == '<') {
+		//go until closing brace
+		do {
+			i++;
+		} while(s.at(i) != '>');
+		return cleanString(s.substr(i+1, s.length()), 0);
 	}
+	//skip past all characters
+	int j = i;
+	do {
+		i++;
+	} while (i < s.length() && isalnum(s.at(i)));
+	return s.substr(j, i);
 }
 
-/*
- * Converts A_Date into a string
- */
-string strDate(const AucParser::A_Date info) {
-	string r;
-	stringstream ss;
-	ss << "Auction: " << info.day << "," << info.month;
-	ss << " open:" << info.time.sHour << strPrd(info.time.sP);
-	ss << " close:" << info.time.eHour << strPrd(info.time.eP);
-	return ss.str();
-}
+string nextInfo(ifstream& s, const string& one) {
+		string words = get_Single(s,one);
+		return cleanString(words, one.length()+1);
+	}
 
 namespace exp {
 /*
@@ -187,12 +200,12 @@ bool get_Pair(ifstream& s, const string first, const string second) {
 void get_Item_Info(ifstream& s) {
 	string id, quant, brand, desc;
 	exp::getline(s, id);
-	cout << id;
+	cout << cleanString(id, 0) << endl;
 	exp::getline(s, quant);
-	cout << quant;
+	cout << cleanString(quant, 0) << endl;
 	exp::getline(s, brand);
-	cout << brand;
+	cout << cleanString(brand, 0) << endl;
 	exp::getline(s, desc);
-	cout << desc;
+	cout << cleanString(desc, 0) << endl;
 	cout << "-----------" << endl;
 }
