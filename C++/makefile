@@ -4,48 +4,49 @@ CC= g++
 COMPILES= DeleteDuplicates  Hello_world  Palendrome SortedMerge EndLTest \
 SimpleInput SpreadsheetEncoding F_StreamTest R_File AucParser
 
-#executables are all lowercase
 LowerExecutables = $(shell echo $(COMPILES))
 
 all: $(COMPILES)
 
 #1
-DeleteDuplicates:
+DeleteDuplicates: 
 	$(CC) -std=c++11 deleteDuplicates.cpp -o DeleteDuplicates 
 #2
-Hello_world:
+Hello_world: 
 	$(CC) hello_world.cpp -o Hello_world
 #3	
-Palendrome:
+Palendrome: 
 	$(CC) palendrome.cpp -o Palendrome
 #4
-SortedMerge:
+SortedMerge: 
 	$(CC) sortedMerge.cpp -o SortedMerge
 #5
-EndLTest:
+EndLTest: 
 	$(CC) endLTest.cpp -o EndLTest
 #6
-SimpleInput:
+SimpleInput: 
 	$(CC) simpleInput.cpp -o SimpleInput
 #7
-SpreadsheetEncoding:
+SpreadsheetEncoding: 
 	$(CC) -std=c++11 spreadsheetEncoding.cpp -o SpreadsheetEncoding
 #8
-F_StreamTest:
+F_StreamTest: 
 	$(CC) fstreamTest.cpp -o F_StreamTest
 #9
-R_File:
+R_File: 
 	$(CC) -std=c++11 rfile.cpp -o R_File
 #10
-AucParser:
-	$(CC) -std=c++11 aucTest.cpp -o AucParser	
+AucParser: FORCE
+	$(CC) -std=c++11 aucTest.cpp -o AucParser -ltidy	
 	
 #cleaners	
-cleanAll:
+cleanAll: 
 	make clean; rm -f -v *~ 	
 	
-clean~:
-	rm -v *~	
-
-clean:
+clean~: 
+	rm -v *~
+		
+clean: 
 	rm -f -v $(LowerExecutables)
+	
+FORCE:	
