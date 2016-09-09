@@ -37,7 +37,7 @@ R_File:
 	$(CC) -std=c++11 rfile.cpp -o R_File
 #10
 AucParser: FORCE
-	$(CC) -std=c++11 aucTest.cpp -o AucParser -ltidy	
+	$(CC) -std=c++11 aucTest.cpp -o AucParser
 	
 #cleaners	
 cleanAll: 
