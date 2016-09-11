@@ -29,7 +29,7 @@ string findLineBefore(ifstream& s, const string& target, const string& exclude);
 
 bool get_Pair(ifstream& s, const string targetA, const string targetB);
 void get_Item_Info(ifstream& s);
-bool isLeadSub(const string line, const string sub );
+bool isLeadSub(const string line, const string sub);
 
 int main(int argc, char *argv[]) {
 
@@ -49,15 +49,15 @@ int main(int argc, char *argv[]) {
 		bool hasMail = get_Pair(s, C_TYPE, C_TRANS);
 		if (hasMail) {
 			//find removal information
-					cout << findLine(s, REMOVAL);
-					//find location information
-					cout << findLine(s, LOCATION);
-					//pull items
-					while ( findLineBefore(s, ITEM, END_OF_INV) != NO_MATCH) {
-						//next item found
-						get_Item_Info(s);
-					}
-					cout << "===========" << endl;
+			cout << findLine(s, REMOVAL);
+			//find location information
+			cout << findLine(s, LOCATION);
+			//pull items
+			while (findLineBefore(s, ITEM, END_OF_INV) != NO_MATCH) {
+				//next item found
+				get_Item_Info(s);
+			}
+			cout << "===========" << endl;
 		}
 	}
 
@@ -71,14 +71,14 @@ namespace exp {
  * Takes an already open ifstream getting a new line
  * while keeping track of how many total lines have been read.
  */
-	void getline(ifstream& s, string& line) {
-		using std::getline;
-		getline(s, line);
-		lineCount++;
-	}
+void getline(ifstream& s, string& line) {
+	using std::getline;
+	getline(s, line);
+	lineCount++;
+}
 }
 
-bool isLeadSub(const string line, const string sub ) {
+bool isLeadSub(const string line, const string sub) {
 
 	if (sub.length() > line.length()) {
 		return false;
@@ -110,7 +110,8 @@ string findLine(ifstream& s, const string& target) {
  * @return string where first was found up until exclude is found
  * @return string empty when exclude reached
  */
-string findLineBefore(ifstream& s, const string& target, const string& exclude) {
+string findLineBefore(ifstream& s, const string& target,
+		const string& exclude) {
 
 	string line, firstFront, excludeFront;
 	do {
