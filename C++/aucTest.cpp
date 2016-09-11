@@ -18,130 +18,115 @@ string const REMOVAL = "<p><b>REMOVAL:";
 string const LOCATION = "<p><b>LOCATION:";
 string const ITEM = "<td align=3D\"center\">123456</td>";
 string const END_OF_INV = "</html>";
+string const NO_MATCH = "";
+int const INPUT_FILE = 1;
 //Globals
 int lineCount = 0;
-int matchCount = 0;
+int mailCount = 0;
 //Prototypes
-string get_Single(ifstream& s, const string& first);
-string get_Single(ifstream& s, const string& first, const string& exclude);
-bool get_Pair(ifstream& s, const string first, const string second);
+string findLine(ifstream& s, const string& target);
+string findLineBefore(ifstream& s, const string& target, const string& exclude);
+
+bool get_Pair(ifstream& s, const string targetA, const string targetB);
 void get_Item_Info(ifstream& s);
-
-string cleanString(string s, int i);
-string cleanString(string s);
-string nextInfo(ifstream& s, const string& one);
-
+bool isLeadSub(const string line, const string sub);
 
 int main(int argc, char *argv[]) {
 	/*
 	 * Test storing a date
 	 */
-/*	AucParser* a = new AucParser();
-	a->AddDate(11, "June", 11, AucParser::am, 4, AucParser::pm, AucParser::Phillipi);
+	/*	AucParser* a = new AucParser();
+	 a->AddDate(11, "June", 11, AucParser::am, 4, AucParser::pm, AucParser::Phillipi);
 
-	//store time
-	AucParser::A_Time time;
-	time.sHour = 11; time.sP = AucParser::am;
-	time.eHour = 12; time.eP = AucParser::pm;
-	//store date
-	AucParser::A_Date date;
-	date.day = 10;
-	date.month = "june";
-	//store date
-	a->AddDate(time, date, AucParser::Westerville);
+	 //store time
+	 AucParser::A_Time time;
+	 time.sHour = 11; time.sP = AucParser::am;
+	 time.eHour = 12; time.eP = AucParser::pm;
+	 //store date
+	 AucParser::A_Date date;
+	 date.day = 10;
+	 date.month = "june";
+	 //store date
+	 a->AddDate(time, date, AucParser::Westerville);
 
-	string info = a->getstrDate();
-	cout << info << endl << endl;
-	info = a->getstrDate();
-	cout << info << endl;
+	 string info = a->getstrDate();
+	 cout << info << endl << endl;
+	 info = a->getstrDate();
+	 cout << info << endl;
 
-*/
+	 */
 
 	/*
 	 * Moving on to processing .mBox file
 	 */
+	char* file = argv[INPUT_FILE];
 	ifstream s;
-	s.open(argv[1]);
+	s.open(file);
 
 	if (!s.good()) {
-		cout << "unable to open " << argv[1] << endl;
+		cout << "unable to open " << file << endl;
+		s.close();
 		return 1;
 	}
-	//TODO: put back !
+
+	//Go through file for content
 	while (!s.eof()) {
 		//advance s to next email
-		get_Pair(s, C_TYPE, C_TRANS);
-		//find removal information
-		cout << nextInfo(s, REMOVAL) << endl;
-		//find location information
-		cout << nextInfo(s, LOCATION) << endl;
-		//pull items
-		string item;
-		do {
-			item = get_Single(s, ITEM, END_OF_INV);
-
-			//item found
-			if (item != "") {
+		bool hasMail = get_Pair(s, C_TYPE, C_TRANS);
+		if (hasMail) {
+			//find removal information
+			cout << findLine(s, REMOVAL);
+			//find location information
+			cout << findLine(s, LOCATION);
+			//pull items
+			while (findLineBefore(s, ITEM, END_OF_INV) != NO_MATCH) {
+				//next item found
 				get_Item_Info(s);
-			} else {
-				cout << "===========";
 			}
-		} while (item != "");
-		cout << endl;
+			cout << "===========" << endl;
+		}
 	}
 
-	cout << matchCount << endl;
+	cout << mailCount << endl;
 	cout << lineCount << endl;
 	s.close();
 }
 
-/* removes leading html tags */
-string cleanString(string s, int i) {
-	if (s.at(i) == '<') {
-		//go until closing brace
-		do {
-			i++;
-		} while(s.at(i) != '>');
-		return cleanString(s.substr(i+1, s.length()), 0);
-	}
-	//skip past all characters
-	int j = i;
-	do {
-		i++;
-	} while (i < s.length() && isalnum(s.at(i)));
-	return s.substr(j, i);
-}
-
-string nextInfo(ifstream& s, const string& one) {
-		string words = get_Single(s,one);
-		return cleanString(words, one.length()+1);
-	}
-
 namespace exp {
-/*
- * Takes an already open ifstream getting a new line
- * while keeping track of how many total lines have been read.
- */
-void getline(ifstream& s, string& line) {
-	using std::getline;
-	getline(s, line);
-	lineCount++;
+	/*
+	 * Takes an already open ifstream getting a new line
+	 * while keeping track of how many total lines have been read.
+	 */
+	void getline(ifstream& s, string& line) {
+		using std::getline;
+		getline(s, line);
+		lineCount++;
+	}
 }
+
+bool isLeadSub(const string line, const string sub) {
+
+	if (sub.length() > line.length()) {
+		return false;
+	}
+	return (line.substr(0, sub.length()) == sub);
 }
 
 /*
  * Advances s to the next line after first
  * @return string where first was found
  */
-string get_Single(ifstream& s, const string& first) {
+string findLine(ifstream& s, const string& target) {
 	string line;
-	do {
+	bool match = false;
+	while (!match && !s.eof()) {
 		exp::getline(s, line);
-	} while (line.substr(0, first.length()) != first && !s.eof());
+		match = isLeadSub(line, target);
+	}
 
 	if (s.eof()) {
 		lineCount--;
-		return "";
+		return NO_MATCH;
 	}
 	return line;
 }
@@ -151,21 +136,22 @@ string get_Single(ifstream& s, const string& first) {
  * @return string where first was found up until exclude is found
  * @return string empty when exclude reached
  */
-string get_Single(ifstream& s, const string& first, const string& exclude) {
+string findLineBefore(ifstream& s, const string& target,
+		const string& exclude) {
 
 	string line, firstFront, excludeFront;
 	do {
 		exp::getline(s, line);
-		firstFront = line.substr(0, first.length());
+		firstFront = line.substr(0, target.length());
 		excludeFront = line.substr(0, exclude.length());
-	} while (firstFront != first && excludeFront != exclude && !s.eof());
+	} while (firstFront != target && excludeFront != exclude && !s.eof());
 
 	if (s.eof()) {
 		lineCount--;
-		return "";
+		return NO_MATCH;
 	}
 	if (excludeFront == exclude) {
-		return "";
+		return NO_MATCH;
 	}
 	//firstFront == first && excludeFront != exclude && !s.eof()
 	return line;
@@ -176,17 +162,17 @@ string get_Single(ifstream& s, const string& first, const string& exclude) {
  *  If no pair is found s.eof() == true;
  *  @return bool pair of lines found
  */
-bool get_Pair(ifstream& s, const string first, const string second) {
+bool get_Pair(ifstream& s, const string targetA, const string targetB) {
 	string line;
-	//find first
-	get_Single(s, first);
+	//find targetA
+	findLine(s, targetA);
 	if (s.eof()) {
 		return false;
 	}
-	//pull the second line
+	//pull the targetB line
 	exp::getline(s, line);
-	if (line.substr(0, second.length()) == second) {
-		matchCount++;
+	if (line.substr(0, targetB.length()) == targetB) {
+		mailCount++;
 		return true;
 	} else {
 		return false;
@@ -200,12 +186,12 @@ bool get_Pair(ifstream& s, const string first, const string second) {
 void get_Item_Info(ifstream& s) {
 	string id, quant, brand, desc;
 	exp::getline(s, id);
-	cout << cleanString(id, 0) << endl;
+	cout << id;
 	exp::getline(s, quant);
-	cout << cleanString(quant, 0) << endl;
+	cout << quant;
 	exp::getline(s, brand);
-	cout << cleanString(brand, 0) << endl;
+	cout << brand;
 	exp::getline(s, desc);
-	cout << cleanString(desc, 0) << endl;
+	cout << desc;
 	cout << "-----------" << endl;
 }
