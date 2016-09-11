@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-#include "AucStorage.h"
+#include "AucFileParser.h"
 
 using namespace std;
 
@@ -24,148 +24,50 @@ int const INPUT_FILE = 1;
 int lineCount = 0;
 int mailCount = 0;
 //Prototypes
-string findLine(ifstream& s, const string& target);
-string findLineBefore(ifstream& s, const string& target, const string& exclude);
-
-bool get_Pair(ifstream& s, const string targetA, const string targetB);
-void get_Item_Info(ifstream& s);
-bool isLeadSub(const string line, const string sub);
+void get_Item_Info(AucFileParser& par);
 
 int main(int argc, char *argv[]) {
 
-	char* file = argv[INPUT_FILE];
-	ifstream s;
-	s.open(file);
+	AucFileParser par = AucFileParser(argv[INPUT_FILE]);
 
-	if (!s.good()) {
-		cout << "unable to open " << file << endl;
-		s.close();
-		return 1;
-	}
-
-	//Go through file for content
-	while (!s.eof()) {
-		//advance s to next email
-		bool hasMail = get_Pair(s, C_TYPE, C_TRANS);
+	while (par.isOkay()) {
+		bool hasMail = par.getPair(C_TYPE, C_TRANS);
 		if (hasMail) {
-			//find removal information
-			cout << findLine(s, REMOVAL);
-			//find location information
-			cout << findLine(s, LOCATION);
-			//pull items
-			while (findLineBefore(s, ITEM, END_OF_INV) != NO_MATCH) {
-				//next item found
-				get_Item_Info(s);
+			cout << par.findLine(REMOVAL);
+			cout << par.findLine(LOCATION);
+			while( par.findLineBefore(ITEM, END_OF_INV) != par.NO_MATCH) {
+				get_Item_Info(par);
 			}
 			cout << "===========" << endl;
 		}
+
 	}
+	string line;
+	par.getLine(line);
+	cout << line;
+	cout << par.findLine(REMOVAL);
+
+
+/*
 
 	cout << mailCount << endl;
 	cout << lineCount << endl;
-	s.close();
-}
-
-namespace exp {
-/*
- * Takes an already open ifstream getting a new line
- * while keeping track of how many total lines have been read.
- */
-void getline(ifstream& s, string& line) {
-	using std::getline;
-	getline(s, line);
-	lineCount++;
-}
-}
-
-bool isLeadSub(const string line, const string sub) {
-
-	if (sub.length() > line.length()) {
-		return false;
-	}
-	return (line.substr(0, sub.length()) == sub);
-}
-
-/*
- * Advances s to the next line after first
- * @return string where first was found
- */
-string findLine(ifstream& s, const string& target) {
-	string line;
-	bool match = false;
-	while (!match && !s.eof()) {
-		exp::getline(s, line);
-		match = isLeadSub(line, target);
-	}
-
-	if (s.eof()) {
-		lineCount--;
-		return NO_MATCH;
-	}
-	return line;
-}
-
-/*
- * Advances s to the next line after first until exclude
- * @return string where first was found up until exclude is found
- * @return string empty when exclude reached
- */
-string findLineBefore(ifstream& s, const string& target,
-		const string& exclude) {
-
-	string line, firstFront, excludeFront;
-	do {
-		exp::getline(s, line);
-		firstFront = line.substr(0, target.length());
-		excludeFront = line.substr(0, exclude.length());
-	} while (firstFront != target && excludeFront != exclude && !s.eof());
-
-	if (s.eof()) {
-		lineCount--;
-		return NO_MATCH;
-	}
-	if (excludeFront == exclude) {
-		return NO_MATCH;
-	}
-	//firstFront == first && excludeFront != exclude && !s.eof()
-	return line;
-}
-
-/*
- *  Advances s to the next line after a pair of lines.
- *  If no pair is found s.eof() == true;
- *  @return bool pair of lines found
- */
-bool get_Pair(ifstream& s, const string targetA, const string targetB) {
-	string line;
-	//find targetA
-	findLine(s, targetA);
-	if (s.eof()) {
-		return false;
-	}
-	//pull the targetB line
-	exp::getline(s, line);
-	if (line.substr(0, targetB.length()) == targetB) {
-		mailCount++;
-		return true;
-	} else {
-		return false;
-	}
+	s.close(); */
 }
 
 /*
  * Simply prints all item info found
  * TODO: print to proper file instead.
  */
-void get_Item_Info(ifstream& s) {
+void get_Item_Info(AucFileParser& par) {
 	string id, quant, brand, desc;
-	exp::getline(s, id);
+	par.getLine(id);
 	cout << id;
-	exp::getline(s, quant);
+	par.getLine(quant);
 	cout << quant;
-	exp::getline(s, brand);
+	par.getLine(brand);
 	cout << brand;
-	exp::getline(s, desc);
+	par.getLine(desc);
 	cout << desc;
 	cout << "-----------" << endl;
 }
