@@ -2,7 +2,7 @@
 CC= g++
 
 COMPILES= DeleteDuplicates  Hello_world  Palendrome SortedMerge EndLTest \
-SimpleInput SpreadsheetEncoding F_StreamTest R_File AucStorage
+SimpleInput SpreadsheetEncoding F_StreamTest R_File AucStorage AucFileParser
 
 LowerExecutables = $(shell echo $(COMPILES))
 
@@ -37,10 +37,10 @@ R_File:
 	$(CC) -std=c++11 rfile.cpp -o R_File
 #10
 AucStorage: FORCE
-	$(CC) -std=c++11 aucStorageTest.cpp -o AucStorage
+	$(CC) -std=c++11 AucProject/aucStorageTest.cpp -o AucStorage
 #11
 AucFileParser: FORCE
-	$(CC) -std=c++11 aucFileParserTest.cpp -o AucFileParser	
+	$(CC) -std=c++11 AucProject/aucFileParserTest.cpp -o AucFileParser	
 	
 #cleaners	
 cleanAll: 
