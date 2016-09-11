@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-#include "AucParser.h"
+#include "AucStorage.h"
 
 using namespace std;
 
@@ -29,36 +29,10 @@ string findLineBefore(ifstream& s, const string& target, const string& exclude);
 
 bool get_Pair(ifstream& s, const string targetA, const string targetB);
 void get_Item_Info(ifstream& s);
-bool isLeadSub(const string line, const string sub);
+bool isLeadSub(const string line, const string sub );
 
 int main(int argc, char *argv[]) {
-	/*
-	 * Test storing a date
-	 */
-	/*	AucParser* a = new AucParser();
-	 a->AddDate(11, "June", 11, AucParser::am, 4, AucParser::pm, AucParser::Phillipi);
 
-	 //store time
-	 AucParser::A_Time time;
-	 time.sHour = 11; time.sP = AucParser::am;
-	 time.eHour = 12; time.eP = AucParser::pm;
-	 //store date
-	 AucParser::A_Date date;
-	 date.day = 10;
-	 date.month = "june";
-	 //store date
-	 a->AddDate(time, date, AucParser::Westerville);
-
-	 string info = a->getstrDate();
-	 cout << info << endl << endl;
-	 info = a->getstrDate();
-	 cout << info << endl;
-
-	 */
-
-	/*
-	 * Moving on to processing .mBox file
-	 */
 	char* file = argv[INPUT_FILE];
 	ifstream s;
 	s.open(file);
@@ -75,15 +49,15 @@ int main(int argc, char *argv[]) {
 		bool hasMail = get_Pair(s, C_TYPE, C_TRANS);
 		if (hasMail) {
 			//find removal information
-			cout << findLine(s, REMOVAL);
-			//find location information
-			cout << findLine(s, LOCATION);
-			//pull items
-			while (findLineBefore(s, ITEM, END_OF_INV) != NO_MATCH) {
-				//next item found
-				get_Item_Info(s);
-			}
-			cout << "===========" << endl;
+					cout << findLine(s, REMOVAL);
+					//find location information
+					cout << findLine(s, LOCATION);
+					//pull items
+					while ( findLineBefore(s, ITEM, END_OF_INV) != NO_MATCH) {
+						//next item found
+						get_Item_Info(s);
+					}
+					cout << "===========" << endl;
 		}
 	}
 
@@ -93,10 +67,10 @@ int main(int argc, char *argv[]) {
 }
 
 namespace exp {
-	/*
-	 * Takes an already open ifstream getting a new line
-	 * while keeping track of how many total lines have been read.
-	 */
+/*
+ * Takes an already open ifstream getting a new line
+ * while keeping track of how many total lines have been read.
+ */
 	void getline(ifstream& s, string& line) {
 		using std::getline;
 		getline(s, line);
@@ -104,7 +78,7 @@ namespace exp {
 	}
 }
 
-bool isLeadSub(const string line, const string sub) {
+bool isLeadSub(const string line, const string sub ) {
 
 	if (sub.length() > line.length()) {
 		return false;
@@ -136,8 +110,7 @@ string findLine(ifstream& s, const string& target) {
  * @return string where first was found up until exclude is found
  * @return string empty when exclude reached
  */
-string findLineBefore(ifstream& s, const string& target,
-		const string& exclude) {
+string findLineBefore(ifstream& s, const string& target, const string& exclude) {
 
 	string line, firstFront, excludeFront;
 	do {

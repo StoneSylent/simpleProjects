@@ -1,6 +1,5 @@
-
-#ifndef AUCPARSER_H_
-#define AUCPARSER_H_
+#ifndef AUCSTORAGE_H_
+#define AUCSTORAGE_H_
 
 #include <iostream>
 #include <queue>
@@ -9,10 +8,10 @@
 
 using namespace std;
 
-class AucParser {
+class AucStorage {
 
 public:
-	AucParser();
+	AucStorage();
 	enum Period {am, pm};
 	enum Location {Westerville, Phillipi};
 	struct A_Time {
@@ -42,10 +41,10 @@ private:
 	string location[2] = {"Westerville","Phillipi"};
 };
 
-AucParser::AucParser() {
+AucStorage::AucStorage() {
 }
 
-	void AucParser::AddDate(int day, string month, int sHour, Period sP, int eHour, Period eP, Location l) {
+	void AucStorage::AddDate(int day, string month, int sHour, Period sP, int eHour, Period eP, Location l) {
 	A_Time t;
 	t.sHour = sHour;
 	t.sP = sP;
@@ -58,12 +57,12 @@ AucParser::AucParser() {
 	this->data.Dates.push(d);
 	this->data.Location = location[l];
 }
-void AucParser::AddDate(A_Time t, A_Date d, Location l) {
+void AucStorage::AddDate(A_Time t, A_Date d, Location l) {
 	d.time = t;
 	this->data.Dates.push(d);
 	this->data.Location = location[l];
 }
-void AucParser::AddDate(A_Date d, Location l) {
+void AucStorage::AddDate(A_Date d, Location l) {
 	this->data.Dates.push(d);
 	this->data.Location = location[l];
 }
@@ -71,7 +70,7 @@ void AucParser::AddDate(A_Date d, Location l) {
 /*
  * Converts A_Date into a string
  */
-string AucParser::getstrDate() {
+string AucStorage::getstrDate() {
 	stringstream ss;
 	A_Date date = this->data.Dates.front();
 	this->data.Dates.pop();
@@ -82,4 +81,4 @@ string AucParser::getstrDate() {
 	return ss.str();
 }
 
-#endif /* AUCPARSER_H_ */
+#endif /* AUCSTORAGE_H_ */
